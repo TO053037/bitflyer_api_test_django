@@ -42,6 +42,8 @@ media
 # IntelliJ
 out/
 
+db_data/
+
 # JIRA plugin
 atlassian-ide-plugin.xml
 
