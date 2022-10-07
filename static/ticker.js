@@ -1,0 +1,4 @@
+function getTicker() {
+    url = ''
+
+}
