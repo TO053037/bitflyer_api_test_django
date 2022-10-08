@@ -3,3 +3,4 @@ psycopg2
 django-environ
 pybitflyer
 bs4
+requests
