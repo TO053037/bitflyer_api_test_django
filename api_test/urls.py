@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('bitflyer.urls')),
+    path('disney/', include('Disney.urls')),
     path('admin/', admin.site.urls),
 ]
