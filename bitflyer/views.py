@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import pybitflyer
-from .models import DayCandlesticks
+from .models import DayCandlesticks, HourCandlesticks
 from .API import get_candle
 
 
@@ -27,4 +27,20 @@ def save_data(request: HttpResponse):
             instance_day_candlesticks.volume = candlestick[5]
             instance_day_candlesticks.quote_volume = candlestick[6]
             instance_day_candlesticks.save()
+
+    for candlestick in get_candle.get_candle_hour():
+        try:
+            HourCandlesticks.objects.get(close_time=candlestick[0])
+            print('duplicate')
+        except HourCandlesticks.DoesNotExist:
+            instance_hour_candlesticks = HourCandlesticks()
+            instance_hour_candlesticks.close_time = candlestick[0]
+            instance_hour_candlesticks.open_price = candlestick[1]
+            instance_hour_candlesticks.high_price = candlestick[2]
+            instance_hour_candlesticks.low_price = candlestick[3]
+            instance_hour_candlesticks.close_price = candlestick[4]
+            instance_hour_candlesticks.volume = candlestick[5]
+            instance_hour_candlesticks.quote_volume = candlestick[6]
+            instance_hour_candlesticks.save()
+
     return render(request, 'bitflyer/index.html')
