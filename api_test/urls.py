@@ -20,4 +20,5 @@ urlpatterns = [
     path('', include('bitflyer.urls')),
     path('disney/', include('Disney.urls')),
     path('admin/', admin.site.urls),
+    path('spotify/', include('Spotify.urls')),
 ]

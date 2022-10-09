@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table border="1">
+        <th><td>アーティスト名</td><td>曲名</td><td>類似スコア</td></th>
+        {% for d in data %}
+            <tr>
+            {% for x in d %}
+                <td>{{x}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
