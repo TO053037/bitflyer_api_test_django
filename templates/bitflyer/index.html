@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>BitFlyerApp</title>
     <script src="{% static "getCandlesticksAPI.js" %}" type="text/javascript"></script>
+    <script src="{% static "getSMA.js" %}" type="text/javascript"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -21,17 +22,6 @@
                 }
             }
 
-            {#var data = google.visualization.arrayToDataTable([#}
-            {##}
-            {#    ['Tue', 38, 38, 55, 55],#}
-            {#    ['Wed', 55, 55, 77, 77],#}
-            {#    ['Thu', 77, 77, 66, 66],#}
-            {#    ['Fri', 66, 66, 22, 22],#}
-                {#['mon', candlesticks[0][1], candlesticks[0][2], candlesticks[0][3], candlesticks[0][4]],#}
-            {##}
-            {#    // Treat the first row as data.#}
-            {#], true);#}
-
             var data = google.visualization.arrayToDataTable(response.candlesticks, true);
 
             var options = {
@@ -43,7 +33,46 @@
                 }
             };
 
-            var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div1'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages: ["corechart"]});
+        google.setOnLoadCallback(drawChart);
+
+        async function drawChart() {
+            let res = await getCandlesticks();
+            const candlesticks = await res.candlesticks;
+            res = await getSMA(3);
+            const sma3_list = await res.sma_list;
+            res = await getSMA(10);
+            const sma10_list = await res.sma_list;
+            const datas = [['Date', 'Low', 'Open', 'High', 'Close', 'SMA3', 'SMA10']]
+            for (let i = 0; i < candlesticks.length; i++) {
+                d = candlesticks[i].slice()
+                d.push(sma3_list[i])
+                d.push(sma10_list[i])
+                datas.push(d)
+            }
+
+            console.log(datas);
+            var data = google.visualization.arrayToDataTable(datas);
+
+            var options = {
+                seriesType: "candlesticks",
+                candlestick: {
+                    fallingColor: {strokeWidth: 0, fill: '#a52714'}, // red
+                    risingColor: {strokeWidth: 0, fill: '#0f9d58'}   // green
+                },
+                bar: {groupWidth: '100%'},
+                series: {
+                    1: {type: "line"},
+                    2: {type: "line"},
+                }
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
     </script>
@@ -53,10 +82,12 @@
 <p>product_code: {{ product_code }}</p>
 <p>timestamp: {{ timestamp }}</p>
 <p>volume: {{ volume }}</p>
+<div id="chart_div1" style="width: 900px; height: 500px;"></div>
 <div id="chart_div" style="width: 900px; height: 500px;"></div>
 </body>
 <script type="text/javascript">
     const getCandlesticksUrl = "{% url 'get_candlesticks' %}"
+    const getSMAUrl = "{% url 'get_sma' %}"
 </script>
 
 </html>

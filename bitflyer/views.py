@@ -6,6 +6,7 @@ import pybitflyer
 from .models import DayCandlesticks, HourCandlesticks
 from .API import get_candle
 from .Unix_time_and_datetime.convert_Unix_time import convert_datetime_to_unix_time
+from .indicator.sma import sma
 
 
 def index(request: HttpRequest):
@@ -74,5 +75,15 @@ def get_candlesticks(request: HttpRequest) -> JsonResponse:
 
     return JsonResponse({
         'status': 200,
-        'candlesticks': candlesticks
+        'candlesticks': candlesticks,
+    })
+
+
+def get_sma(request: HttpRequest) -> JsonResponse:
+    day_period = int(request.GET.get('day_period'))
+    today = datetime.datetime.now()
+    base_datetime = datetime.datetime(year=today.year, month=today.month, day=today.day - 1)
+    return JsonResponse({
+        'status': 200,
+        'sma_list': [s for s in sma(base_datetime, day_period)],
     })
