@@ -20,7 +20,6 @@ def save_data(request: HttpRequest):
     for candlestick in get_candle.get_candle_day():
         try:
             DayCandlesticks.objects.get(close_time=candlestick[0])
-            print('duplicate')
         except DayCandlesticks.DoesNotExist:
             instance_day_candlesticks = DayCandlesticks()
             instance_day_candlesticks.close_time = candlestick[0]
@@ -35,7 +34,6 @@ def save_data(request: HttpRequest):
     for candlestick in get_candle.get_candle_hour():
         try:
             HourCandlesticks.objects.get(close_time=candlestick[0])
-            print('duplicate')
         except HourCandlesticks.DoesNotExist:
             instance_hour_candlesticks = HourCandlesticks()
             instance_hour_candlesticks.close_time = candlestick[0]
@@ -70,9 +68,6 @@ def get_candlesticks(request: HttpRequest) -> JsonResponse:
         candlesticks[i][4] = instance_day_candlesticks.high_price
         date -= datetime.timedelta(days=1)
 
-    for candlestick in candlesticks:
-        print(candlestick)
-
     return JsonResponse({
         'status': 200,
         'candlesticks': candlesticks,
@@ -80,10 +75,9 @@ def get_candlesticks(request: HttpRequest) -> JsonResponse:
 
 
 def get_sma(request: HttpRequest) -> JsonResponse:
-    day_period = int(request.GET.get('day_period'))
     today = datetime.datetime.now()
-    base_datetime = datetime.datetime(year=today.year, month=today.month, day=today.day - 1)
     return JsonResponse({
         'status': 200,
-        'sma_list': [s for s in sma(base_datetime, day_period)],
+        'sma_list': [s for s in sma(datetime.datetime(year=today.year, month=today.month, day=today.day - 1)
+                                    , int(request.GET.get('day_period')))],
     })

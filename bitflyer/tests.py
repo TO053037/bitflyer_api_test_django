@@ -95,13 +95,13 @@ class SMATestCase(TestCase):
                 instance_day_candlesticks.save()
 
     def test_sma(self):
-        sma_list = [sma for sma in sma(datetime.datetime(year=2022, month=10, day=9), 3)]
+        sma_list = [sma for sma in sma(datetime.datetime(year=2022, month=10, day=11), 3)]
         day1 = DayCandlesticks.objects.get(
-            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=9)))
+            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=11)))
         day2 = DayCandlesticks.objects.get(
-            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=8)))
+            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=10)))
         day3 = DayCandlesticks.objects.get(
-            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=7)))
+            close_time=convert_datetime_to_unix_time(datetime.datetime(year=2022, month=10, day=9)))
 
         first_sma = (day1.close_price + day2.close_price + day3.close_price) / 3
         print(sma_list[:3])

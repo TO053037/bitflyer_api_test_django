@@ -22,5 +22,6 @@ def sma(base_datetime: datetime.datetime, period: int) -> Generator[float, None,
                 break
 
         if len(close_price_list) == period:
-            base_datetime -= datetime.timedelta(days=1)
             yield cal_average(close_price_list)
+
+        base_datetime -= datetime.timedelta(days=1)
