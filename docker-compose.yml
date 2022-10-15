@@ -19,8 +19,3 @@ services:
       - "8000:8000"
     depends_on:
       - db
-  # selenium:
-  #   image: selenium/standalone-chrome:4.5.0-20221004
-  #   ports:
-  #     - "4442:4442"
-  #     - "5900:5900"

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<HTML lang="ja">
+<head>
+<meta charset="UTF-8">
+<!-- <meta name="robots" content="all"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="msvalidate.01" content="B05F4ACE8E5BAAAAA9E1CF3CC31AEF82" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href='_design.css' rel="stylesheet" type="text/css">
+<link href='_add.css'    rel="stylesheet" type="text/css">
+<meta name="keywords" content="東京ディズニーランド,東京ディズニーシー,アトラクション">
+<meta name="description" content="東京ディズニーランド、東京ディズニーシーの各アトラクション一覧を掲載" >
+<title>アトラクションの一覧 - ディズニー移動時間、距離、歩数</title>
+</head>
+<!-- body -->
+<body>
+<div class="main_title2">東京ディズニーリゾートでの各施設間の移動時間等を掲載しています。</div>
+<div class="main_title1" style="cursor: pointer" onClick="location.href='https://disney.hosuu.jp';">ディズニー移動時間、距離、歩数</div>
+<!-- menu -->
+<span class="bold">次は何をする？</span>
+<table class="menu_bar">
+<tr>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./attractions.php';"    ><strong class='white'>アトラクションを楽しむ！</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./entertainment.php';"  ><strong class='white'>イベント、ショーを見る！</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./greeting.php';"       ><strong class='white'>キャラクターと会う</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./restaurant.php';"     ><strong class='white'>お食事にする！</strong></td>
+</tr>
+<tr>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./shop.php';"           ><strong class='white'>お買い物をする</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./popcone.php';"        ><strong class='white'>ポップコーンを食べる！</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./medal.php';"          ><strong class='white'>メダルを集める</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./mailbox.php';"        ><strong class='white'>手紙をだす</strong></td>
+</tr>
+<tr>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./restroom.php';"       ><strong class='white'>レストルームに行く</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./atm.php';"            ><strong class='white'>お金を引き出す</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./hotels.php';"         ><strong class='white'>ホテルに泊まる</strong></td>
+<td class="menu" style="cursor: pointer" onMouseOver="style.background='#5B48cE';" onMouseOut="style.background='#7B68EE';" onClick="location.href='./station.php';"        ><strong class='white'>交通機関を利用する</strong></td>
+</tr>
+</table>
+<div class="frame">
+<!-- left -->
+<div class="frame_left">
+<article class="left_content_area">
+<h1 class="content_title">アトラクションを楽しむ！</h1>
+<div class="honbun">
+<span class='bold'>どのアトラクションに行く？</span>
+</div>
+<div class="kubun_name">東京ディズニーランド</div><h2 class="title">アドベンチャーランド</h2><ul><li class="title"><a href="syosai_information.php?code=AAL0101">カリブの海賊</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6342337201679&lon=139.880680953964">地図</a></li><li class="title"><a href="syosai_information.php?code=AAL0102">ジャングルクルーズ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6338838337526&lon=139.882187014326">地図</a></li><li class="title"><a href="syosai_information.php?code=AAL0103">ウエスタンリバー鉄道</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6337159749287&lon=139.882264798387">地図</a></li><li class="title"><a href="syosai_information.php?code=AAL0104">スイスファミリー・ツリーハウス</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6334521960646&lon=139.88176858972">地図</a></li><li class="title"><a href="syosai_information.php?code=AAL0105">魅惑のチキルーム</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6331971363352&lon=139.882213836416">地図</a></li></ul><h2 class="title">クリッターカントリー</h2><ul><li class="title"><a href="syosai_information.php?code=ACC0101">スプラッシュマウンテン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6309931247721&lon=139.882784476384">地図</a></li><li class="title"><a href="syosai_information.php?code=ACC0102">ビーバーブラザーズのカヌー探検</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.630986584588&lon=139.8839794005">地図</a></li></ul><h2 class="title">ファンタジーランド</h2><ul><li class="title"><a href="syosai_information.php?code=AFL0101">ピーターパン空の旅</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6316923763674&lon=139.881883924707">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0102">白雪姫と七人のこびと</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6316847462194&lon=139.881334071859">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0103">シンデレラのフェアリーテイル・ホール</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6319725112998&lon=139.88085529755">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0104">ミッキーのフィルハーマジック</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6314296808502&lon=139.880891507372">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0105">ピノキオの冒険旅行</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6309925797568&lon=139.880541479095">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0106">空飛ぶダンボ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6315038024943&lon=139.881552671894">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0107">キャッスルカルーセル</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6312956077016&lon=139.881170457109">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0108">ホーンテッドマンション</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6313838998003&lon=139.882044857248">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0109">イッツ・ア・スモールワールド</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6308029141996&lon=139.881049757704">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0110">アリスのティーパーティー</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6311746146671&lon=139.881116812929">地図</a></li><li class="title"><a href="syosai_information.php?code=AFL0111">プーサンのハニーハント</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6306710200699&lon=139.880231683954">地図</a></li></ul><h2 class="title">トゥモローランド</h2><ul><li class="title"><a href="syosai_information.php?code=ATL0101">モンスターズ・インク”ライド＆ゴーシーク！”</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6338424140759&lon=139.878711541995">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0102">スターツアーズ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6334489260736&lon=139.878428568944">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0103">スペース・マウンテン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6325300531953&lon=139.878446003303">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0104">バズ・ライトイヤーのアストロブラスター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6326990045171&lon=139.878950258597">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0105">スティッチ・エンカウンター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.632558393442&lon=139.878967692956">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0106">スタージェット</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6311261083993&lon=139.879616787538">地図</a></li><li class="title"><a href="syosai_information.php?code=ATL0107">グランドサーキット・レースウェイ</a> <span class='purple'>サービス終了</span>　<a href="map.php?lat=35.6314923572451&lon=139.879033407077">地図</a></li></ul><h2 class="title">トゥーンタウン</h2><ul><li class="title"><a href="syosai_information.php?code=ATT0101">ロジャーラビットのカートゥーンスピン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6297739162071&lon=139.880013083919">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0102">ミニーの家</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6301140102294&lon=139.878983115658">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0103">チップとデールのツリーハウス</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6303908805766&lon=139.878722941383">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0104">ガジェットのゴーコースター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6305391257226&lon=139.878671979412">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0105">ドナルドのボート</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6304066861383&lon=139.878986468419">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0106">グーフィーのペイント＆プレイハウス</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6303827052848&lon=139.879150083169">地図</a></li><li class="title"><a href="syosai_information.php?code=ATT0107">トゥーンパーク</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6305167799645&lon=139.879441102847">地図</a></li></ul><h2 class="title">ワールドバザール</h2><ul><li class="title"><a href="syosai_information.php?code=AWB0101">ペニーアーケード</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6340211725281&lon=139.879622822508">地図</a></li><li class="title"><a href="syosai_information.php?code=AWB0102">ディズニーギャラリー</a> <span class='purple'>サービス終了</span>　<a href="map.php?lat=35.6341094616163&lon=139.879868244633">地図</a></li><li class="title"><a href="syosai_information.php?code=AWB0103">オムニバス</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6330183760398&lon=139.879751568541">地図</a></li></ul><h2 class="title">ウエスタンランド</h2><ul><li class="title"><a href="syosai_information.php?code=AWL0101">ウエスタンランド・シューティングギャラリー</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6325327782192&lon=139.883264591798">地図</a></li><li class="title"><a href="syosai_information.php?code=AWL0102">カントリーベア・シアター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6323191360438&lon=139.882484068974">地図</a></li><li class="title"><a href="syosai_information.php?code=AWL0103">蒸気船マークトウェイン号</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6316411453591&lon=139.882875671491">地図</a></li><li class="title"><a href="syosai_information.php?code=AWL0104">ビッグサンダーマウンテン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6324330422748&lon=139.883369868502">地図</a></li><li class="title"><a href="syosai_information.php?code=AWL0105">トムソーヤ島いかだ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6319948566509&lon=139.883651500448">地図</a></li></ul><div class="hr2"></div><div class="kubun_name">東京ディズニーシー</div></ul><h2 class="title">アラビアンコースト</h2><ul><li class="title"><a href="syosai_information.php?code=BAC0101">ジャスミンのフライングカーペット</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6283195085179&lon=139.88125869482">地図</a></li><li class="title"><a href="syosai_information.php?code=BAC0102">シンドバッド・ストーリーブック・ヴォヤッジ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6284230648247&lon=139.881451632829">地図</a></li><li class="title"><a href="syosai_information.php?code=BAC0103">マジックランプシアター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6283936330459&lon=139.883023407312">地図</a></li><li class="title"><a href="syosai_information.php?code=BAC0104">キャラバンカルーセル</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.628048081351&lon=139.883251395078">地図</a></li></ul><h2 class="title">アメリカンウォーターフロント</h2><ul><li class="title"><a href="syosai_information.php?code=BAW0101">タワー・オブ・テラー</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6241676984789&lon=139.887990803399">地図</a></li><li class="title"><a href="syosai_information.php?code=BAW0102">トイ・ストーリー・マニア</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6247857962277&lon=139.888894707837">地図</a></li><li class="title"><a href="syosai_information.php?code=BAW0103">ビッグシティ・ヴィークル</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6243606501409&lon=139.887049348034">地図</a></li><li class="title"><a href="syosai_information.php?code=BAW0104">ディズニーシー・エレクトリックレールウェイ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6248555635747&lon=139.887675643839">地図</a></li><li class="title"><a href="syosai_information.php?code=BAW0105">タートル・トーク</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6235724887234&lon=139.887309522309">地図</a></li><li class="title"><a href="syosai_information.php?code=BAW0106">ディズニーシー・トランジットスチーマーライン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6241164626485&lon=139.885537923255">地図</a></li></ul><h2 class="title">ロストリバーデルタ</h2><ul><li class="title"><a href="syosai_information.php?code=BLD0101">インディ・ジョーンズ・アドベンチャー</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.626642092886&lon=139.881296767383">地図</a></li><li class="title"><a href="syosai_information.php?code=BLD0102">レイジングスピリッツ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6276318884465&lon=139.881287379651">地図</a></li><li class="title"><a href="syosai_information.php?code=BLD0103">ディズニーシー・トランジットスチーマーライン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6267325703019&lon=139.881994812279">地図</a></li></ul><h2 class="title">メディテレーニアンハーバー</h2><ul><li class="title"><a href="syosai_information.php?code=BMH0101">ディズニーシー・トランジットスチーマーライン</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6266937330512&lon=139.886020720877">地図</a></li><li class="title"><a href="syosai_information.php?code=BMH0102">ヴェネツィアン・ゴンドラ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6260462174088&lon=139.887922407069">地図</a></li><li class="title"><a href="syosai_information.php?code=BMH0103">フォートレス・エクスプロレーション</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6255687530204&lon=139.885098040976">地図</a></li></ul><h2 class="title">ミステリアスアイランド</h2><ul><li class="title"><a href="syosai_information.php?code=BMI0101">センター・オブ・ジ・アース</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6258004356181&lon=139.884293221761">地図</a></li><li class="title"><a href="syosai_information.php?code=BMI0102">海底２万マイル</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6264505074969&lon=139.884714328576">地図</a></li></ul><h2 class="title">マーメイドラグーン</h2><ul><li class="title"><a href="syosai_information.php?code=BML0101">フランダーのフライングフィッシュコースター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.627396702254&lon=139.882726141144">地図</a></li><li class="title"><a href="syosai_information.php?code=BML0102">スカットルのスクーター</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6271383529536&lon=139.883105673719">地図</a></li><li class="title"><a href="syosai_information.php?code=BML0104">ジャンピン・ジェリーフィッシュ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6269594241693&lon=139.883100979853">地図</a></li><li class="title"><a href="syosai_information.php?code=BML0105">ブローフィッシュ・バルーンレース</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6269594241693&lon=139.883100979853">地図</a></li><li class="title"><a href="syosai_information.php?code=BML0106">ワールプール</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6269594241693&lon=139.883100979853">地図</a></li><li class="title"><a href="syosai_information.php?code=BML0107">アリエルのプレイグラウンド</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6269594241693&lon=139.883100979853">地図</a></li></ul><h2 class="title">ポートディスカバリー</h2><ul><li class="title"><a href="syosai_information.php?code=BPD0101">ストームライダー</a> <span class='purple'>サービス終了</span>　<a href="map.php?lat=35.6247465520682&lon=139.882572741189">地図</a></li><li class="title"><a href="syosai_information.php?code=BPD0102">アクアトピア</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.6247225695168&lon=139.883216471352">地図</a></li><li class="title"><a href="syosai_information.php?code=BPD0103">ディズニーシー・エレクトリックレールウェイ</a> <span class='blue'>稼働中</span>　<a href="map.php?lat=35.625474746112&lon=139.883074314274">地図</a></li></ul></article>
+<br>
+<div class="ad">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ディズニー移動時間、距離歩数 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9864387520977573"
+     data-ad-slot="3059335247"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div>
+<!-- right -->
+<div class="frame_right">
+<div class="right_content_area">
+<div class='right_content_area' style='border-style:solid;border-color:#9932cc;'>
+<div class='content_title'>現在の天気(舞浜)</div>
+<table>
+<tr><td style='text-align:center'><img src='/_right/_weather.png' alt='weather_image' title='本日の空模様'/></td>
+<td style='text-align:left'>
+broken clouds 75 %<br>
+気温： 20.5 ℃<br>
+風力： 北 3.6 m<br>
+湿度： 79 %<br>
+日没： 17:07<br>
+</td>
+</table>
+</div>
+<script type="text/javascript">
+function func_remove_risk(w_string){
+    w_string = w_string.replace(/&/g, '&amp;');
+    w_string = w_string.replace(/</g, '&lt;');
+    w_string = w_string.replace(/>/g, '&gt;');
+    w_string = w_string.replace(/"/g, '&quot;');
+    w_string = w_string.replace(/'/g, '&#39;');
+
+    return w_string;
+}
+function func_link_amazon() {
+
+    w_name = func_remove_risk(document.getElementById("benri_item_name").value);
+    if(w_name != ''){
+        window.open("https://best-shopping.info/?i_keyword=" + w_name);
+    }
+}
+function func_link_rakuten() {
+
+    w_name = func_remove_risk(document.getElementById("benri_item_name").value);
+    if(w_name != ''){
+        window.open("https://rakuten.best-item-search.biz/index.php?i_keyword=" + w_name + "&image=on");
+    }
+}
+</script>
+<div class="right_content_area" style='border-style:solid;border-color:#9932cc;'>
+    <div class="content_title">商品検索</div>
+    <div class="honbun" >
+    ディズニー関連商品はこちらから探すこともできます。
+    </div>
+    <div class='align_center'>
+    <form>
+        <textarea style='margin: 10px 10px;width:80%;height:30px;font-size:14px;' id='benri_item_name'></textarea><br>
+        <input type="button" style="margin:5px;auto;width:80%;height:40px;font-size:18px;cursor: pointer;" value="Amazonで検索" onClick='func_link_amazon()' ></input><BR>
+        <input type="button" style="margin:5px;auto;width:80%;height:40px;font-size:18px;cursor: pointer;" value="楽天で検索"   onClick='func_link_rakuten()'></input><BR>
+        <BR>
+    </form>
+    </div>
+</div>
+<div class="right_content_area" style='border-style:solid;border-color:#9932cc;'>
+    <div class="content_title">ホテル検索</div>
+    <div class="honbun" >
+    入力した住所やランドマークに近いホテルを素早くお探しします。
+    </div>
+    <div class='align_center'>
+    <form name="item">
+        <textarea style='margin: 5px 10px;width:80%;height:30px;font-size:16px;' id='hotel_keyword'></textarea><br>
+        <input type="button" style="margine:10px;auto;width:80%;height:40px;font-size:18px;cursor: pointer;" value="ホテルを探す" onClick='func_jump_search_hotels_link()'></input><BR>
+    </form>
+    </div>
+    <br>
+</div>
+<script type="text/javascript">
+function escapeHtml(str) {
+    str = str.replace(/&/g, '&amp;');
+    str = str.replace(/</g, '&lt;');
+    str = str.replace(/>/g, '&gt;');
+    str = str.replace(/"/g, '&quot;');
+    str = str.replace(/'/g, '&#39;');
+    return str;
+}
+function func_jump_search_hotels_link() {
+
+    w_addr = escapeHtml(document.getElementById("hotel_keyword").value);
+
+    if(w_addr !=''){
+        window.open("https://search-hotels.link/result.php?keyword=" + w_addr);
+    }
+}
+</script>
+<div class="ad">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ディズニー移動時間、距離歩数 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9864387520977573"
+     data-ad-slot="3059335247"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+<br>
+<div class='align_left'>
+<ul>
+<li><a href='https://best-shopping.info/?i_keyword=%E3%83%9F%E3%83%83%E3%82%AD%E3%83%BC%E3%83%9E%E3%82%A6%E3%82%B9'>ミッキーマウスのぬいぐるみ</a></li>
+<li><a href='https://best-shopping.info/?i_keyword=%E3%82%B8%E3%82%A7%E3%83%A9%E3%83%88%E3%83%BC%E3%83%8B'>ジェラトーニはいかが？</a></li>
+<li><a href='https://best-shopping.info/?i_keyword=%E3%82%A6%E3%83%83%E3%83%87%E3%82%A3%E3%81%AE%E3%83%9E%E3%82%B0%E3%82%AB%E3%83%83%E3%83%97'>ウッディのマグカップ</a></li>
+<li><a href='https://best-shopping.info/?i_keyword=%E3%82%A4%E3%83%83%E3%83%84%E3%83%BB%E3%82%A2%E3%83%BB%E3%82%B9%E3%83%A2%E3%83%BC%E3%83%AB%E3%83%BB%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E3%81%AE%E3%83%95%E3%82%A3%E3%82%AE%E3%83%A5%E3%82%A2'>イッツ・ア・スモール・ワールドのフィギュア</a></li>
+<li><a href='https://best-shopping.info/?i_keyword=%E3%83%87%E3%82%A3%E3%82%BA%E3%83%8B%E3%83%BC%E3%81%AE%EF%BC%A3%EF%BC%A4'>ディズニーのＣＤいろいろ</a></li>
+<li><a href="http://hb.afl.rakuten.co.jp/hgc/14259cfd.92d5067d.14259cfe.ab02ec4f/?pc=http%3A%2F%2Ftravel.rakuten.co.jp%2Fusj%2F15th%2F%3Flid%3DtopC_service_usj&m=http%3A%2F%2Ftravel.rakuten.co.jp%2Fusj%2F15th%2F%3Flid%3DtopC_service_usj&scid=af_url_txt&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRlc3QiLCJjb2wiOjAsInRhciI6MX0%3D" target="_blank" style="word-wrap:break-word;"  >ユニバーサル・スタジオ・ジャパン®への旅（楽天トラベル）</a></li>
+<li><a href="http://hb.afl.rakuten.co.jp/hgc/13ff0d5e.635ef47a.13ff0d5f.5c88abaa/?pc=http%3A%2F%2Fsearch.travel.rakuten.co.jp%2Fds%2Fundated%2Fsearch%3Ff_cd%3D03%26f_dai%3Djapan%26f_chu%3Dnagasaki%26f_shou%3Dsasebo%26f_sort%3Dhotel%26f_page%3D1%26f_hyoji%3D30%26f_image%3D1%26f_tab%3Dhotel%26f_campaign%3D16allthema140101-03%26f_point_min%3D0%26f_layout%3Dlist%26lid%3DtopC_service_htb&m=http%3A%2F%2Fsearch.travel.rakuten.co.jp%2Fds%2Fundated%2Fsearch%3Ff_cd%3D03%26f_dai%3Djapan%26f_chu%3Dnagasaki%26f_shou%3Dsasebo%26f_sort%3Dhotel%26f_page%3D1%26f_hyoji%3D30%26f_image%3D1%26f_tab%3Dhotel%26f_campaign%3D16allthema140101-03%26f_point_min%3D0%26f_layout%3Dlist%26lid%3DtopC_service_htb&scid=af_url_txt&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRlc3QiLCJjb2wiOjAsInRhciI6MX0%3D" target="_blank" style="word-wrap:break-word;"  >ハウステンボス周辺の宿（楽天トラベル）</a></li>
+<li><a href="http://hb.afl.rakuten.co.jp/hgc/150a0bb5.7e4d2269.150a0bb6.8268e173/?pc=http%3A%2F%2Ftravel.rakuten.co.jp%2Fbus%2F&m=http%3A%2F%2Ftravel.rakuten.co.jp%2Fbus%2F&scid=af_url_txt&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRlc3QiLCJjb2wiOjAsInRhciI6MX0%3D" target="_blank" style="word-wrap:break-word;"  >高速バスを手配する（楽天トラベル）</a></li>
+<li><a href="http://hb.afl.rakuten.co.jp/hgc/14259cfd.92d5067d.14259cfe.ab02ec4f/?pc=http%3A%2F%2Ftravel.rakuten.co.jp%2Fair%2F&m=http%3A%2F%2Ftravel.rakuten.co.jp%2Fair%2F&scid=af_url_txt&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRlc3QiLCJjb2wiOjAsInRhciI6MX0%3D" target="_blank" style="word-wrap:break-word;"  >海外航空券を手配する（楽天トラベル）</a></li>
+</ul>
+</div>
+<br>
+<div class="ad">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ディズニー移動時間、距離歩数 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9864387520977573"
+     data-ad-slot="3059335247"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div>
+</div>
+</div>
+<!-- footer -->
+<div class="footer">
+<a href="./f_about_me.php">作者紹介</a>　｜　
+<a href="./f_about_site.php">必ずお読みください</a>　｜　
+<a href="./f_update_info.php">更新情報</a>　｜　
+<a href="./f_inquiry.php">ご意見、ご要望</a>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64230801-12', 'auto');
+  ga('require', 'displayfeatures');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+<!-- END -->
+</body>
+</html>
