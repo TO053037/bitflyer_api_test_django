@@ -13,7 +13,3 @@ RUN apt-get install -y libglib2.0-dev \
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
-# RUN add-apt-repository universe
-# RUN apt-get update
-# RUN apt install chromium-chromedriver
-# RUN cp /usr/lib/chromium-browser/chromedriver /usr/bin
