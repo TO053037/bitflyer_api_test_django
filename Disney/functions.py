@@ -3,12 +3,14 @@ import chromedriver_binary
 import os
 import requests
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 
 
 def scrape_caribbean():
     # Chrome のオプションを設定する
-    options = webdriver.ChromeOptions()
+    # options = webdriver.ChromeOptions()
+    options = FirefoxOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -19,7 +21,11 @@ def scrape_caribbean():
         # desired_capabilities=options.to_capabilities(),
         # options=options,
     # )
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
+    driver = webdriver.Firefox(
+        executable_path='./Disney/geckodriver',
+        options=options,
+    )
 
     # Selenium 経由でブラウザを操作する
     driver.get('https://disney.hosuu.jp/syosai_information.php?code=AAL0101')
