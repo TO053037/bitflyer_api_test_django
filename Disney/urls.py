@@ -12,4 +12,6 @@ urlpatterns = [
     path('test', views.test, name='test'),
     path('source_attractions', views.source_attractions, name='source_attractionssource_attractions'),
     path('scrape_attractions_meter_and_to', views.scrape_attractions_meter_and_to, name='scrape_attractions_meter_and_to'),
+    path('source_attractions_1001', views.source_attractions_1001, name='source_attractions_1001'),
+    path('source_crowding', views.source_crowding, name='source_crowding'),
 ]

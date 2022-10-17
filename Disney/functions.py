@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import chromedriver_binary
 import os
 import requests
 from selenium import webdriver
@@ -7,27 +6,24 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 
 
-def scrape_caribbean():
-    # Chrome のオプションを設定する
-    # options = webdriver.ChromeOptions()
+def make_driver():
+    # Firefox のオプションを設定する
     options = FirefoxOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
     # Selenium Server に接続する
-    # driver = webdriver.Remote(
-        # command_executor='http://localhost:4442/wd/hub',
-        # desired_capabilities=options.to_capabilities(),
-        # options=options,
-    # )
-    # driver = webdriver.Chrome(options=options)
     driver = webdriver.Firefox(
         executable_path='./Disney/geckodriver',
         options=options,
     )
+    return driver
 
+
+def scrape_caribbean(): 
     # Selenium 経由でブラウザを操作する
+    driver = make_driver()
     driver.get('https://disney.hosuu.jp/syosai_information.php?code=AAL0101')
     source = driver.page_source
 
@@ -36,6 +32,7 @@ def scrape_caribbean():
 
     # ブラウザを終了する
     driver.quit()
+
 
 def bs_caribbean():
     data = []
@@ -60,22 +57,13 @@ def bs_caribbean():
         for t in names:
             f.write(t + '\n')
 
-def source_attractions():
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('--headless')
-    # options.add_argument('--no-sandbox')
-    # options.add_argument('--disable-dev-shm-usage')
-    # driver = webdriver.Chrome(options=options)
 
-    # driver.get('view-source:https://disney.hosuu.jp/attractions.php')
-    # source = driver.page_source
+def source_attractions():
     res = requests.get('https://disney.hosuu.jp/attractions.php')
 
     with open('./Disney/data/attractions.txt', 'w') as f:
-        # f.write(source)
         f.write(res.text)
 
-    # driver.quit()
 
 def bs_attractions_urls():
     data = ''
@@ -96,6 +84,7 @@ def bs_attractions_urls():
                 f.write(t + '\n')
             i += 1
 
+
 def bs_attractions_names():
     data = ''
     with open('./Disney/data/attractions.txt', 'r') as f:
@@ -113,12 +102,9 @@ def bs_attractions_names():
         #     print(x.contents)
         # f.write(soup.string)
 
+
 def selenium_attractions():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(options=options)
+    driver = make_driver()
 
     names = []
     urls = []
@@ -135,10 +121,12 @@ def selenium_attractions():
 
     driver.quit()
 
+
 def test1():
     dirPath = "./Disney/data/attractions_source"
     files = [f for f in os.listdir(dirPath)]
     print(files)
+
 
 def bs_attractions_meter_and_to():
     dirPath = "./Disney/data/attractions_source"
@@ -162,3 +150,24 @@ def bs_attractions_meter_and_to():
         with open('./Disney/data/attractions_to/' + 'to_' + fn, 'w') as f:
             for t in to:
                 f.write(t + '\n')
+
+
+def selenium_attractions_1001():
+    driver = make_driver()
+    # driver.get('https://disneyreal.asumirai.info/realtime/disneyland-wait-2022-10-1.html')
+    driver.get('https://urtrip.jp/tdl-past-info/?rm=20220701')
+    source = driver.page_source
+    driver.quit()
+
+    with open('./Disney/wait_time/attractions_1001.txt', 'w') as f:
+        f.writelines(source)
+
+
+def selenium_crowding():
+    driver = make_driver()
+    driver.get('https://disneyreal.asumirai.info/history/disneyland-crowd-calendar.html#current')
+    source = driver.page_source
+    driver.quit()
+
+    with open('./Disney/wait_time/crowding.txt', 'w') as f:
+        f.writelines(source)
