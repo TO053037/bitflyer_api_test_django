@@ -1,3 +1,5 @@
+import time
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from . import functions as func
@@ -28,6 +30,7 @@ def scrape_attractions_urls(request: HttpResponse) -> render:
     func.bs_attractions_urls()
     return render(request, 'Disney/index.html')
 
+
 def scrape_attractions_names(request: HttpResponse) -> render:
     func.bs_attractions_names()
     return render(request, 'Disney/index.html')
@@ -49,7 +52,10 @@ def scrape_attractions_meter_and_to(request: HttpResponse) -> render:
 
 
 def source_attractions_1001(request: HttpResponse) -> render:
-    func.selenium_attractions_1001()
+    # func.selenium_attractions_1001()
+    for i in range(7):
+        func.scraping_wait_time_data(2022, 11, 11 - i)
+        time.sleep(3)
     return render(request, 'Disney/index.html')
 
 
