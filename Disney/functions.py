@@ -59,7 +59,7 @@ def scraping_wait_time_data(year: int, month: int, day: int) -> List[List[int]]:
             except:
                 wait_time_list[i][j] = -1
 
-    with open('wait_time_data_' + date_str, 'w') as file:
+    with open('wait_time_data_' + date_str.csv, 'w') as file:
         writer = csv.writer(file, lineterminator='\n')
         writer.writerows(wait_time_list)
     print(len(wait_time_list))
