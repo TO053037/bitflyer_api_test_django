@@ -8,7 +8,7 @@ from typing import Tuple
 # globalだけでなくlobalにも対応
 class IPSO():
 
-    def __init__(self, m: int, c1: float, c2: float, k: int=-1, i: int=10):
+    def __init__(self, m: int, c1: float, c2: float, k: int=-1, i: int=1000):
         self.m = m
         self.c1 = c1
         self.c2 = c2
@@ -16,7 +16,7 @@ class IPSO():
         self.iter = i
         self.n = None
         self.dist = None
-        # self.wait = None
+        self.wait = None
         self.xs = None
         self.ps = None
         self.p_time = None
@@ -29,7 +29,7 @@ class IPSO():
         time = 0
         # for i in range(len(path) - 1):
         for i in range(len(path)):
-            # time += self.wait[path[i]][time]
+            time += self.wait[path[i]][time]
             time += self.dist[path[i]][path[(i+1)%len(path)]]
         
         return time
@@ -74,31 +74,6 @@ class IPSO():
         self.l_time = [self.INF for _ in range(self.m)]
         self.ls = [[] for _ in range(self.m)]
         self.update_lbest()
-
-    # def update_lbest(self):
-    #     if self.k == m-1:
-    #         mi_ind = np.argmin(np.array(calc_time(p) for p in self.ps))
-    #         self.ls = [self.ps[mi_ind] for _ in range(self.n)]
-    #         return
-
-    #     times = [calc_time(p) for p in ps]
-    #     for i in range(self.m):
-    #         front = i
-    #         back = i
-    #         mi = self.calc_time(self.ps[i])
-    #         mi_ind = i
-    #         for j in range(k // 2):
-    #             front = (front + 1) % self.n
-    #             back = (back - 1 + self.n) % self.n
-    #             f_time = self.calc_time(ps[front])
-    #             if mi > f_time:
-    #                 mi = f_time
-    #                 mi_ind = front
-    #             b_time = self.calc_time(ps[front])
-    #             if mi > b_time:
-    #                 mi = b_time
-    #                 mi_ind = back
-    #         self.ls[i] = self.ps[mi_ind]
 
     def update_x_p(self, num: int):
         # 1
@@ -151,11 +126,10 @@ class IPSO():
 
         return (self.ps[mi_ind], self.p_time[mi_ind])
 
-    # def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]):
-    def fit(self, n: int, dist: list[list[int]]):
+    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]):
         self.n = n
         self.dist = dist
-        # self.wait = wait
+        self.wait = wait
 
         # 1
         self.xs = [list(np.random.permutation(self.n)) for _ in range(self.m)]
@@ -172,7 +146,7 @@ class IPSO():
                 self.update_x_p(j)
             # 6
             self.update_lbest()
-            if (i+1) % 1 == 0:
+            if (i+1) % 100 == 0:
                 print("-"*100)
                 print("iter:", (i+1))
                 route, time = self.best_route_time()
@@ -218,16 +192,50 @@ def wrapper_alg(source_dist: str, source_wait: str) -> Tuple[list[int], int]:
     wait = [wait[i] for i in in_list]
     assert -1 not in reduce(lambda accum, x: accum + x, dist, []), 'distに-1が存在'
     assert [-1 for _ in range(len(wait[0]))] not in wait, 'waitに-1のみの行が存在'
-    print(dist)
-    # print('*'*100)
-    # print(wait)
+    assert dist == [[dist[i][j] for i in range(len(dist))] for j in range(len(dist))], 'distが対称行列でない'
 
     # m -> minに120m/minで変換後、小数点以下切り上げ
     dist = [[(x+119) // 120 for x in l] for l in dist]
+    wrapper_ipso(dist, wait)
 
-# def wrapper_ipso(dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
-#     new_wait = 
+def wrapper_ipso(dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+    n = len(wait)
+    new_wait = copy.deepcopy(wait)
+    # -1の時に訪れたらペナルティ
+    for i in range(n):
+        max_i = max(wait[i])
+        for j in range(len(wait[i])):
+            if wait[i][j] == -1:
+                new_wait[i][j] = 2 * max_i + 30
+
+    # 消費時間の平均で12時間追加して倍にする
+    for i in range(n):
+        mean_i = sum(wait[i]) // len(wait[0])
+        new_wait[i] += [mean_i for _ in range(len(wait[0]))]
+
+    # 15倍にする
+    wait_2 = [[] for _ in range(n)]
+    new_wait_2 = [[] for _ in range(n)]
+    for i in range(n):
+        wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], wait[i], [])
+        new_wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], new_wait[i], [])
+
+    # ipso
+    np.random.seed(28)
+    ipso = IPSO(16, 0.2, 0.3, i=1000)
+    route, time = ipso.fit(n, dist, new_wait_2)
+
+    # -1を通っていないか検証
+    now_time = 0
+    for i in range(n):
+        if wait_2[route[i]][now_time] == -1:
+            raise AssertionError('-1を通っている')
+        now_time += new_wait_2[route[i]][now_time]
+        now_time += dist[route[i]][route[(i+1)%n]]
+
+    print(route, time)
     
+    return (route, time)
 
 
 def shape_dist(source: str) -> list[list[int]]:
@@ -251,4 +259,5 @@ def shape_wait(source: str) -> list[list[int]]:
 
 
 if __name__ == '__main__':
-    wrapper_alg('./Disney/attractions_distances.csv', './wait_time_data_20221105.csv')
+    # wrapper_alg('./Disney/attractions_distances.csv', './wait_time_data_20221105.csv')
+    wrapper_alg('./Disney/attractions_distances_2.csv', './wait_time_data_20221105.csv')
