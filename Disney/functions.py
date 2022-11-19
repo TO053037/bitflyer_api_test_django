@@ -46,7 +46,6 @@ def make_driver():
 def create_xpath_by_a(index: int) -> str:
     return '/html/body/div[3]/div[1]/article/table[2]/tbody/tr[' + str(index + 2) + ']/td[2]/a'
 
-
 def create_xpath_by_td(index: int) -> str:
     return '/html/body/div[3]/div[1]/article/table[2]/tbody/tr[' + str(index + 2) + ']/td[1]'
 
@@ -59,12 +58,19 @@ def scraping_distance_source_urls(attractions_num: int) -> List[str]:
         attraction_name = driver.find_element(
             by='xpath', value=create_xpath_by_a(i)).text
         print(attraction_name)
-        for i, v in attraction_dic.items():
+        for j, v in attraction_dic.items():
             if v == attraction_name:
-                urls[i] = driver.find_element(
+                urls[j] = driver.find_element(
                     by='xpath', value=create_xpath_by_a(i)).get_attribute('href')
+                break
+
     urls[2] = 'https://disney.hosuu.jp/syosai_information.php?code=ACC0101'
     driver.quit()
+    urls_file = open('source_distance.txt', 'w')
+    for url in urls:
+        urls_file.write(url)
+        urls_file.write('\n')
+    urls_file.close()
     return urls
 
 
@@ -106,7 +112,6 @@ def create_between_attractions_distance_csv_file() -> None:
 
 if __name__ == '__main__':
     create_between_attractions_distance_csv_file()
-
 
 def scraping_wait_time_data(year: int, month: int, day: int) -> List[List[int]]:
     driver = make_driver()

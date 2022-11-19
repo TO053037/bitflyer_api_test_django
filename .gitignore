@@ -138,3 +138,5 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
+.devcontainer/devcontainer.json
+.devcontainer/docker-compose.yml
