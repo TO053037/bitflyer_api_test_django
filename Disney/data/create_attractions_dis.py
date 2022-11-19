@@ -1,3 +1,9 @@
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+import time
+from typing import List
+import csv
+
 attraction_dic = {0: "", 1: "", 2: "スプラッシュマウンテン", 3: "プーさんのハニーハント", 4: "ビッグサンダーマウンテン", 5: "スペース・マウンテン",
                   6: "バス・ライトイヤーのアストロブラスター", 7: "モンスターズ・インクライド&ゴーシーク!", 8: "空飛ぶダンボ", 9: "ピータパン空の旅", 10: "ホーンテッドマンション",
                   11: "ピノキオの冒険旅行", 12: "白雪姫と七人のこびと", 13: "イッツ・ア・スモールワールド", 14: "", 15: "キャッスルカルーセル",
@@ -15,29 +21,37 @@ def open_txt_file(file_path: str) -> str:
     return data
 
 
-if __name__ == '__main__':
-    open_txt_file('./attractions_to/to_オムニバス.txt')
-    num_attractions = 36
-    distances_list = [[0 for _ in range(num_attractions)] for _ in range(num_attractions)]
-    for i in range(num_attractions):
-        attraction_i_name = attraction_dic[i]
-        try:
-            print(attraction_i_name)
-            attractions_meter_data = open_txt_file('./attractions_meter/meter_{}.txt'.format(attraction_i_name)).split('\n')
-            print(attractions_meter_data)
-        except:
-            continue
-        for j in range(i + 1, num_attractions):
-            attraction_j_name = attraction_dic[j]
-            try:
-                data = open_txt_file('./attractions_to/to_{}.txt'.format(attraction_j_name))
-            except:
-                continue
-            for index, attraction_name in enumerate(data.split('\n')):
-                if attraction_name == attraction_i_name and index < 39:
-                    # distances_list[i][j] = attractions_meter_data[i]
-                    # distances_list[j][i] = attractions_meter_data[i]
-                    break
+def make_driver():
+    # Firefox のオプションを設定する
+    options = FirefoxOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
-    # for dis in distances_list:
-    #     print(dis)
+    # Selenium Server に接続する
+    driver = webdriver.Firefox(
+        executable',
+        # executable_path='./geckodriver',
+        options=options,
+    )
+    return driver
+
+
+def create_source_url_list(attractions_num: int) -> List[str]:
+    driver = make_driver()
+    driver.get('https://disney.hosuu.jp/syosai_information.php?code=ACC0101')
+    url_list = ['' for _ in range(attractions_num)]
+    
+    print(driver.page_source)
+    driver.quit()
+    
+    return url_list
+    
+
+if __name__ == '__main__':
+    # attractions_num = 36
+    # distance_list = [[-1 for _ in range(attractions_num)] for _ in range(attractions_num))]
+    # for i in range(attractions_num):
+    #     if attraction_dic[i] == "":
+    #         continue
+    create_source_url_list(36)

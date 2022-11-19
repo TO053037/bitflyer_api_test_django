@@ -8,6 +8,25 @@ from typing import List
 import csv
 
 
+attraction_dic_time = {0: "", 1: "", 2: "スプラッシュマウンテン", 3: "プーさんのハニーハント", 4: "ビッグサンダーマウンテン", 5: "スペース・マウンテン",
+                       6: "バス・ライトイヤーのアストロブラスター", 7: "モンスターズ・インクライド&ゴーシーク!", 8: "空飛ぶダンボ", 9: "ピータパン空の旅", 10: "ホーンテッドマンション",
+                       11: "ピノキオの冒険旅行", 12: "白雪姫と七人のこびと", 13: "イッツ・ア・スモールワールド", 14: "", 15: "キャッスルカルーセル",
+                       16: "ミッキーのフィルハーマジック", 17: "シンデレラのフェアリーテイル・ホール", 18: "スターツアーズ", 19: "スティッチ・エンカウンター", 20: "オムニバス",
+                       21: "カリブの海賊", 22: "ジャングルクルーズ", 23: "ウエスタンリバー鉄道", 24: "", 25: "ウエスタンランド・シューティングギャラリー",
+                       26: "カントリーベア・シアター", 27: "トムソーヤ島いかだ", 28: "ブーバーブラザーズのカヌー探検", 29: "スイスファミリー・ツリーハウス",
+                       30: "ガジェットのゴーコースター", 31: "ロジャーラビットのカートゥーンスピン", 32: "グーフィーのペイント&プレイハウス", 33: "ミニーの家", 34: "ドナルドのボート",
+                       35: "チップとデールのツリーハウス", }
+
+attraction_dic = {0: "", 1: "", 2: "スプラッシュマウンテン", 3: "プーさんのハニーハント", 4: "ビッグサンダーマウンテン", 5: "スペース・マウンテン",
+                  6: "バズ・ライトイヤーのアストロブラスター", 7: "モンスターズ・インク\"ライド&ゴーシーク!\"", 8: "空飛ぶダンボ", 9: "ピーターパン空の旅", 10: "ホーンテッドマンション",
+                  11: "ピノキオの冒険旅行", 12: "白雪姫と七人のこびと", 13: "イッツ・ア・スモールワールド", 14: "", 15: "キャッスルカルーセル",
+                  16: "ミッキーのフィルハーマジック", 17: "シンデレラのフェアリーテイル・ホール", 18: "スターツアーズ", 19: "スティッチ・エンカウンター", 20: "オムニバス",
+                  21: "カリブの海賊", 22: "ジャングルクルーズ", 23: "ウエスタンリバー鉄道", 24: "", 25: "ウエスタンランド・シューティングギャラリー",
+                  26: "カントリーベア・シアター", 27: "トムソーヤ島いかだ", 28: "ビーバーブラザーズのカヌー探検", 29: "スイスファミリー・ツリーハウス",
+                  30: "ガジェットのゴーコースター", 31: "ロジャーラビットのカートゥーンスピン", 32: "グーフィーのペイント＆プレイハウス", 33: "ミニーの家", 34: "ドナルドのボート",
+                  35: "チップとデールのツリーハウス", }
+
+
 def make_driver():
     # Firefox のオプションを設定する
     options = FirefoxOptions()
@@ -17,11 +36,76 @@ def make_driver():
 
     # Selenium Server に接続する
     driver = webdriver.Firefox(
-        executable_path='./Disney/geckodriver',
-        # executable_path='./geckodriver',
+        # executable_path='./Disney/geckodriver',
+        executable_path='./geckodriver',
         options=options,
     )
     return driver
+
+
+def create_xpath_by_a(index: int) -> str:
+    return '/html/body/div[3]/div[1]/article/table[2]/tbody/tr[' + str(index + 2) + ']/td[2]/a'
+
+
+def create_xpath_by_td(index: int) -> str:
+    return '/html/body/div[3]/div[1]/article/table[2]/tbody/tr[' + str(index + 2) + ']/td[1]'
+
+
+def scraping_distance_source_urls(attractions_num: int) -> List[str]:
+    urls = ['' for _ in range(attractions_num)]
+    driver = make_driver()
+    driver.get('https://disney.hosuu.jp/syosai_information.php?code=ACC0101')
+    for i in range(47):
+        attraction_name = driver.find_element(
+            by='xpath', value=create_xpath_by_a(i)).text
+        print(attraction_name)
+        for i, v in attraction_dic.items():
+            if v == attraction_name:
+                urls[i] = driver.find_element(
+                    by='xpath', value=create_xpath_by_a(i)).get_attribute('href')
+    urls[2] = 'https://disney.hosuu.jp/syosai_information.php?code=ACC0101'
+    driver.quit()
+    return urls
+
+
+def create_between_attractions_distance_csv_file() -> None:
+    attraction_num = len(attraction_dic.keys())
+    distance_list = [[-1 for _ in range(attraction_num)]
+                     for _ in range(attraction_num)]
+    source_urls = scraping_distance_source_urls(attraction_num)
+    for i in range(attraction_num):
+        if source_urls[i] == '':
+            continue
+        driver = make_driver()
+        driver.get(source_urls[i])
+        for j in range(47):
+            try:
+                to_attraction_name = driver.find_element(
+                    by='xpath', value=create_xpath_by_a(j)).text
+                for k, v in attraction_dic.items():
+                    if v == to_attraction_name:
+                        distance_str = driver.find_element(
+                            by='xpath', value=create_xpath_by_td(j)).text
+                        distance = int(distance_str[:-2])
+                        distance_list[i][k] = distance
+                        break
+            except:
+                print(i, j)
+        driver.quit()
+        print(distance_list[i])
+        time.sleep(3)
+    for i in range(attraction_num):
+        distance_list[i][i] = 0
+    print('------------------------------------------------')
+    for distances in distance_list:
+        print(distances)
+    with open('attractions_distances.csv', 'w') as file:
+        writer = csv.writer(file, lineterminator='\n')
+        writer.writerows(distance_list)
+
+
+if __name__ == '__main__':
+    create_between_attractions_distance_csv_file()
 
 
 def scraping_wait_time_data(year: int, month: int, day: int) -> List[List[int]]:
@@ -49,7 +133,8 @@ def scraping_wait_time_data(year: int, month: int, day: int) -> List[List[int]]:
     for i in range(48):
         wait_times = []
         for j in range(5):
-            wait_times += driver.find_element(by='xpath', value=xpath_list[j] + '[' + str(i + 2) + ']').text.split()[1:]
+            wait_times += driver.find_element(
+                by='xpath', value=xpath_list[j] + '[' + str(i + 2) + ']').text.split()[1:]
         wait_time_list.append(wait_times)
 
     for i in range(len(wait_time_list)):
@@ -245,14 +330,10 @@ def selenium_attractions_1001():
 
 def selenium_crowding():
     driver = make_driver()
-    driver.get('https://disneyreal.asumirai.info/history/disneyland-crowd-calendar.html#current')
+    driver.get(
+        'https://disneyreal.asumirai.info/history/disneyland-crowd-calendar.html#current')
     source = driver.page_source
     driver.quit()
 
     with open('./Disney/wait_time/crowding.txt', 'w') as f:
         f.writelines(source)
-
-
-if __name__ == '__main__':
-    # scraping_wait_time_data()
-    selenium_attractions_1001()
