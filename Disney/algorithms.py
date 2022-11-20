@@ -157,6 +157,240 @@ class IPSO():
         return self.best_route_time()
 
 
+class GA():
+
+    def __init__(self, m: int, e: int, cr: float, mr: float, i: int):
+        # データ数
+        self.n = None
+        # 遺伝子数
+        self.m = m
+        # エリート数
+        self.elite = e
+        # 交叉確率
+        self.crate = cr
+        # 突然変異確率
+        self.mrate = mr
+        # イテレーション
+        self.iter = i
+        self.dist = None
+        self.wait = None
+        self.xs = None
+        self.INF = 2 ** 30
+        self.best_time = self.INF
+        self.best_route = None
+
+    def calc_time(self, path: list[int]) -> int:
+        time = 0
+        # for i in range(len(path) - 1):
+        for i in range(len(path)):
+            time += self.wait[path[i]][time]
+            time += self.dist[path[i]][path[(i+1)%len(path)]]
+        
+        return time
+
+    def update_x(self):
+        pass
+
+    def local_search(self):
+        pass
+    
+    # indはxs[ind]
+    def mutate(self, ind: int):
+        pass
+
+    def norm_softmax(self, l: list[int]):
+        mean = np.mean(l)
+        std = np.sqrt(np.var(l))
+        if std == 0:
+            print("*"*100)
+            return [1.0 / self.m for _ in range(self.m)]
+        l2 = [(x - mean) / std for x in l]
+        su = 0
+        for x in l2:
+            su += np.exp(x)
+    
+        return [np.exp(x) / su for x in l2]
+
+    # ルーレット選択
+    def selection(self):
+        # 最適タイム、最適ルートを保存
+        time_list = [self.calc_time(x) for x in self.xs]
+        mi_ind = np.argmin(time_list)
+        if time_list[mi_ind] < self.best_time:
+            self.best_time = time_list[mi_ind]
+            self.best_route = copy.deepcopy(self.xs[mi_ind])
+
+        minus_time_list = [-t for t in time_list]
+        p_list = self.norm_softmax(minus_time_list)
+        samples = np.random.choice(a=list(range(self.m)), size=self.m, p=p_list)
+        argsorted_time = np.argsort(time_list)
+        next_generation = [self.xs[argsorted_time[i]] for i in range(self.elite)]
+
+        for i in range((self.m - self.elite) // 2):
+        # for i in range(self.m // 2):
+            s1 = copy.deepcopy(self.xs[samples[2*i]])
+            s2 = copy.deepcopy(self.xs[samples[2*i + 1]])
+            if np.random.random() < self.crate:
+                s1, s2 = self.CX3(s1, s2)
+            # while np.random.random() < self.mrate:
+            #     s1 = self.UOM(s1)
+            # while np.random.random() < self.mrate:
+            #     s2 = self.UOM(s2)
+            if np.random.random() < self.mrate:
+                s1 = self.UOM(s1)
+            if np.random.random() < self.mrate:
+                s2 = self.UOM(s2)
+
+            next_generation.append(s1)
+            next_generation.append(s2)
+
+        self.xs = copy.deepcopy(next_generation)
+
+    # indはxs[ind]
+    def UOM(self, path: list[int]):
+        r1, r2 = np.random.choice(self.n, size=2, replace=False)
+        tmp = copy.deepcopy(path)
+        tmp[r1] = path[r2]
+        tmp[r2] = path[r1]
+
+        return tmp
+
+    # x = [D, E, I, M, P, S, U, W]
+    # y = [M, E, I, S, W, P, U, D]
+    # NRは単にyを返しているため交叉オペレータとしては意味をなさない
+    def NR(self, ind1: int, ind2: int):
+        new_path = copy.deepcopy(self.xs[ind1])
+        while True:
+            if self.xs[ind1] == self.xs[ind2]:
+                break
+
+            best_time = self.INF
+            best_path = None
+            # xのi番目の要素をyがある位置の要素とswap
+            for i in range(self.n):
+                if self.xs[ind1][i] == self.xs[ind2][i]:
+                    continue
+
+                for j in range(self.n):
+                    if self.xs[ind2][j] == self.xs[ind1][i]:
+                        tmp = copy.deepcopy(self.xs[ind1])
+                        tmp[i] = self.xs[ind1][j]
+                        tmp[j] = self.xs[ind1][i]
+                        tmp_time = self.calc_time(tmp)
+                        if tmp_time < best_time:
+                            best_time = tmp_time
+                            best_path = copy.deepcopy(tmp)
+                        break
+
+        return tmp
+
+    # サイクルを先頭ではなくランダムに決めることもできる
+    def CX(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
+        child1 = [0 for _ in range(self.n)]
+        child2 = [0 for _ in range(self.n)]
+        seen_flg = [False for _ in range(self.n)]
+        child_flg = True
+        # key: 数字, value: インデックス
+        num_to_index = {num:i for (i, num) in enumerate(path1)}
+        for i in range(self.n):
+            if seen_flg[i] == True:
+                continue
+
+            ind = i
+            while True:
+                seen_flg[ind] = True
+
+                if child_flg:
+                    child1[ind] = path1[ind]
+                    child2[ind] = path2[ind]
+                else:
+                    child1[ind] = path2[ind]
+                    child2[ind] = path1[ind]
+                ind = num_to_index[path2[ind]]
+
+                if ind == i:
+                    child_flg ^= True
+                    break
+
+        return (child1, child2)
+
+    # サイクルを先頭ではなくランダムに決めることもできる
+    def CX2(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
+        child1 = [0 for _ in range(self.n)]
+        child2 = [0 for _ in range(self.n)]
+        seen_flg = [False for _ in range(self.n)]
+        # key: 数字, value: インデックス
+        num_to_index = {num:i for (i, num) in enumerate(path1)}
+        rand = np.random.randint(0, self.n)
+
+        ind = rand
+        while True:
+            seen_flg[ind] = True
+            child1[ind] = path2[ind]
+            child2[ind] = path1[ind]
+            ind = num_to_index[path2[ind]]
+
+            if ind == rand:
+                break
+
+        for i in range(self.n):
+            if not seen_flg[i]:
+                child1[i] = path1[i]
+                child2[i] = path2[i]
+
+        return (child1, child2)
+
+    def CX3(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
+        child1 = [0 for _ in range(self.n)]
+        child2 = [0 for _ in range(self.n)]
+        seen_flg = [False for _ in range(self.n)]
+        # child_flg = True
+        # key: 数字, value: インデックス
+        num_to_index = {num:i for (i, num) in enumerate(path1)}
+        for i in range(self.n):
+            if seen_flg[i] == True:
+                continue
+
+            ind = i
+            child_flg = np.random.random() < 0.5
+            while True:
+                seen_flg[ind] = True
+
+                if child_flg:
+                    child1[ind] = path1[ind]
+                    child2[ind] = path2[ind]
+                else:
+                    child1[ind] = path2[ind]
+                    child2[ind] = path1[ind]
+                ind = num_to_index[path2[ind]]
+
+                if ind == i:
+                    # child_flg ^= True
+                    break
+
+        return (child1, child2)
+
+    def SR(self, ind1: int, ind2: int):
+        pass
+
+    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+        self.n = n
+        self.dist = dist
+        self.wait = wait
+
+        self.xs = [list(np.random.permutation(self.n)) for _ in range(self.m)]
+
+        for i in range(self.iter):
+            self.selection()
+            if i == 0 or (i+1) % 100 == 0:
+                print("-"*100)
+                print("generation:", (i+1))
+                print("route:", self.best_route)
+                print("time:", self.best_time)
+
+        return (self.best_route, self.best_time)
+
+
 def do_alg() -> int:
     dist = []
     with open('./wait_time_data_20221105.csv', 'r') as f:
@@ -194,8 +428,8 @@ def wrapper_alg(source_dist: str, source_wait: str) -> Tuple[list[int], int]:
     assert [-1 for _ in range(len(wait[0]))] not in wait, 'waitに-1のみの行が存在'
     assert dist == [[dist[i][j] for i in range(len(dist))] for j in range(len(dist))], 'distが対称行列でない'
 
-    # m -> minに120m/minで変換後、小数点以下切り上げ
-    dist = [[(x+119) // 120 for x in l] for l in dist]
+    # m -> minに80m/minで変換後、小数点以下切り上げ
+    dist = [[(x+79) // 80 for x in l] for l in dist]
     wrapper_ipso(dist, wait)
 
 def wrapper_ipso(dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
@@ -224,6 +458,10 @@ def wrapper_ipso(dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int
     np.random.seed(28)
     ipso = IPSO(16, 0.2, 0.3, i=1000)
     route, time = ipso.fit(n, dist, new_wait_2)
+
+    # ga
+    # ga = GA(256, 32, 1.0, 1.0, i=1000)
+    # route, time = ga.fit(27, dist, new_wait_2)
 
     # -1を通っていないか検証
     now_time = 0
