@@ -420,8 +420,9 @@ def wrapper_alg(source_dist: str, source_wait: str) -> Tuple[list[int], int]:
 
     no_list = sorted(no_dist_list + no_wait_list)
     in_list = [i for i in range(len(dist)) if i not in no_list]
-    print(no_list)
-    print(in_list)
+    print("no_list:", no_list)
+    print("in_list:", in_list)
+
     dist = [[dist[i][j] for j in in_list] for i in in_list]
     wait = [wait[i] for i in in_list]
     assert -1 not in reduce(lambda accum, x: accum + x, dist, []), 'distに-1が存在'
@@ -430,7 +431,14 @@ def wrapper_alg(source_dist: str, source_wait: str) -> Tuple[list[int], int]:
 
     # m -> minに80m/minで変換後、小数点以下切り上げ
     dist = [[(x+79) // 80 for x in l] for l in dist]
-    wrapper_ipso(dist, wait)
+
+    route, time = wrapper_ipso(dist, wait)
+
+    # バックエンドに渡すために頂点番号を変更
+    vertex_mapping_list = [in_list[i] for i in range(len(in_list))]
+    route = [vertex_mapping_list[x] for x in route]
+
+    return (route, time)
 
 def wrapper_ipso(dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
     n = len(wait)
@@ -498,4 +506,6 @@ def shape_wait(source: str) -> list[list[int]]:
 
 if __name__ == '__main__':
     # wrapper_alg('./Disney/attractions_distances.csv', './wait_time_data_20221105.csv')
-    wrapper_alg('./Disney/attractions_distances_2.csv', './wait_time_data_20221105.csv')
+    route, time = wrapper_alg('./Disney/attractions_distances_2.csv', './wait_time_data_20221105.csv')
+    print("route:", route)
+    print("time:", time)
