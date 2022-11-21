@@ -134,20 +134,33 @@ def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[
     # 巡回セールスマン問題のアルゴリズム
     route = fc.fit(n, dist)
 
-    # timeを計算
-    time = 0
-    for i in range(n):
-        time += new_wait_2[route[i]][time]
-        time += dist[route[i]][route[(i+1)%n]]
+    # mi_timeとmi_routeを計算（先頭アトラクションと逆順を考慮）
+    rev_route = list(reversed(route))
+    mi_route = None
+    mi_time = 2 ** 30
+    for s in range(n):
+        time = 0
+        rev_time = 0
+        for i in range(n):
+            time += new_wait_2[route[(s+i)%n]][time]
+            time += dist[route[(s+i)%n]][route[(s+i+1)%n]]
+            rev_time += new_wait_2[rev_route[(s+i)%n]][rev_time]
+            rev_time += dist[rev_route[(s+i)%n]][rev_route[(s+i+1)%n]]
+        if time < mi_time:
+            mi_route = route[s:] + route[:s]
+            mi_time = time
+        if rev_time < mi_time:
+            mi_route = rev_route[s:] + rev_route[:s]
+            mi_time = rev_time
 
-    print(route, time)
+    print(mi_route, mi_time)
 
     # 閉園時間を過ぎていたらメッセージ
-    if time > len(new_wait_2[0]) // 2:
+    if mi_time > len(new_wait_2[0]):
         print("閉園時間を過ぎている")
-        time *= -1
+        mi_time *= -1
 
-    return (route, time)
+    return (mi_route, mi_time)
 
 
 def shape_dist(source: str) -> list[list[int]]:
