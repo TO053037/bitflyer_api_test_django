@@ -126,7 +126,7 @@ class IPSO():
 
         return (self.ps[mi_ind], self.p_time[mi_ind])
 
-    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]):
+    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
         self.n = n
         self.dist = dist
         self.wait = wait
@@ -504,3 +504,11 @@ class GA():
 #     route, time = wrapper_alg('./Disney/attractions_distances_2.csv', './wait_time_data_20221105.csv')
 #     print("route:", route)
 #     print("time:", time)
+
+class TEST_TSP():
+
+    def __init__(self):
+        pass
+
+    def fit(self, n: int, dist: list[list[int]]) -> Tuple[list[int], int]:
+        return [i for i in range(n)]
