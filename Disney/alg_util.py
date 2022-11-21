@@ -2,11 +2,11 @@ import copy
 from functools import reduce
 import numpy as np
 from typing import Tuple
-import algorithm_wada
+import alg_wada
 
 
 
-def wrapper_alg(fc, source_dist: str, source_wait: str) -> Tuple[list[int], int]:
+def wrapper_alg(fc, source_dist: str, source_wait: str, tspts_flg) -> Tuple[list[int], int]:
     dist = shape_dist(source_dist)
     wait = shape_wait(source_wait)
     wait = [[wait[i][j] for i in range(len(wait))] for j in range(len(wait[0]))]
@@ -41,7 +41,11 @@ def wrapper_alg(fc, source_dist: str, source_wait: str) -> Tuple[list[int], int]
     # m -> minに80m/minで変換後、小数点以下切り上げ
     dist = [[(x+79) // 80 for x in l] for l in dist]
 
-    route, time = wrapper_alg_2(fc, dist, wait)
+    # tspts_flgがTrueなら待ち時間を考慮する
+    if tspts_flg:
+        route, time = wrapper_tspts(fc, dist, wait)
+    else:
+        route, time = wrapper_tsp(fc, dist, wait)
 
     # バックエンドに渡すために頂点番号を変更
     vertex_mapping_list = [in_list[i] for i in range(len(in_list))]
@@ -50,7 +54,7 @@ def wrapper_alg(fc, source_dist: str, source_wait: str) -> Tuple[list[int], int]
     return (route, time)
 
 
-def wrapper_alg_2(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
     n = len(wait)
     new_wait = copy.deepcopy(wait)
     # -1の時に訪れたらペナルティ
@@ -91,7 +95,58 @@ def wrapper_alg_2(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[lis
         now_time += dist[route[i]][route[(i+1)%n]]
 
     print(route, time)
+
+    # 閉園時間を過ぎていたらメッセージ
+    if time > len(new_wait_2[0]) // 2:
+        print("閉園時間を過ぎている")
+        time *= -1
     
+    return (route, time)
+
+
+def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+    n = len(wait)
+    new_wait = copy.deepcopy(wait)
+    # -1の時に訪れたら前後の値の平均値で補間（一方しかないならその値を使う）、小数点以下は切り上げ
+    for i in range(n):
+        front = None
+        for j in range(len(wait[i])):
+            if wait[i][j] != -1:
+                front = wait[i][j]
+            elif front != None:
+                new_wait[i][j] = front
+
+        back = None
+        for j in range(len(wait[i])-1, -1, -1):
+            if wait[i][j] != -1:
+                back = wait[i][j]
+            elif back != None:
+                if new_wait[i][j] != -1:
+                    new_wait[i][j] = (new_wait[i][j] + back + 1) // 2
+                else:
+                    new_wait[i][j] = back
+
+    # 15倍にする
+    new_wait_2 = [[] for _ in range(n)]
+    for i in range(n):
+        new_wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], new_wait[i], [])
+
+    # 巡回セールスマン問題のアルゴリズム
+    route = fc.fit(n, dist)
+
+    # timeを計算
+    time = 0
+    for i in range(n):
+        time += new_wait_2[route[i]][time]
+        time += dist[route[i]][route[(i+1)%n]]
+
+    print(route, time)
+
+    # 閉園時間を過ぎていたらメッセージ
+    if time > len(new_wait_2[0]) // 2:
+        print("閉園時間を過ぎている")
+        time *= -1
+
     return (route, time)
 
 
@@ -113,4 +168,3 @@ def shape_wait(source: str) -> list[list[int]]:
     wait = [[int(x) for x in l] for l in wait]
 
     return wait
-
