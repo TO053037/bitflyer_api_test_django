@@ -8,12 +8,13 @@ from typing import Tuple
 # globalだけでなくlobalにも対応
 class IPSO():
 
-    def __init__(self, m: int, c1: float, c2: float, k: int=-1, i: int=1000):
+    def __init__(self, m: int, c1: float, c2: float, k: int=-1, i: int=1000, display_flg: bool=True):
         self.m = m
         self.c1 = c1
         self.c2 = c2
         self.k = m-1 if k == -1 else k
         self.iter = i
+        self.display_flg = display_flg
         self.n = None
         self.dist = None
         self.wait = None
@@ -138,18 +139,19 @@ class IPSO():
         # 7
         # 終了条件には工夫の余地がある
         route, time = self.best_route_time()
-        print("initial_route:", route)
-        print("initial_time:", time)
+        if self.display_flg:
+            print("initial_route:", route)
+            print("initial_time:", time)
         for i in range(self.iter):
             # 2, 3, 4, 5
             for j in range(self.m):
                 self.update_x_p(j)
             # 6
             self.update_lbest()
-            if (i+1) % 100 == 0:
+            if self.display_flg and (i+1) % 100 == 0:
+                route, time = self.best_route_time()
                 print("-"*100)
                 print("iter:", (i+1))
-                route, time = self.best_route_time()
                 print("route:", route)
                 print("time:", time)
 
@@ -159,7 +161,7 @@ class IPSO():
 
 class GA():
 
-    def __init__(self, m: int, e: int, cr: float, mr: float, i: int):
+    def __init__(self, m: int, e: int, cr: float, mr: float, i: int, display_flg: bool=True):
         # データ数
         self.n = None
         # 遺伝子数
@@ -172,6 +174,8 @@ class GA():
         self.mrate = mr
         # イテレーション
         self.iter = i
+        # 途中経過を表示するか
+        self.display_flg = display_flg
         self.dist = None
         self.wait = None
         self.xs = None
@@ -382,7 +386,7 @@ class GA():
 
         for i in range(self.iter):
             self.selection()
-            if i == 0 or (i+1) % 100 == 0:
+            if display_flg and (i == 0 or (i+1) % 100 == 0):
                 print("-"*100)
                 print("generation:", (i+1))
                 print("route:", self.best_route)
@@ -510,5 +514,5 @@ class TEST_TSP():
     def __init__(self):
         pass
 
-    def fit(self, n: int, dist: list[list[int]]) -> Tuple[list[int], int]:
+    def fit(self, n: int, dist: list[list[int]]) -> list[int]:
         return [i for i in range(n)]

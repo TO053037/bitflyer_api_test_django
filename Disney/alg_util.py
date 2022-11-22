@@ -77,7 +77,7 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[lis
         new_wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], new_wait[i], [])
 
     # ipso
-    np.random.seed(28)
+    # np.random.seed(28)
     # ipso = IPSO(16, 0.2, 0.3, i=1000)
     # route, time = ipso.fit(n, dist, new_wait_2)
 
