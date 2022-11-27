@@ -29,7 +29,6 @@ class IPSO():
     # スタートとゴールを入口にするという改良の余地あり
     def calc_time(self, path: list[int]) -> int:
         time = 0
-        # for i in range(len(path) - 1):
         for i in range(len(path)):
             time += self.wait[path[i]][time]
             time += self.dist[path[i]][path[(i+1)%len(path)]]
@@ -62,8 +61,6 @@ class IPSO():
                 if mi > b_time:
                     mi = b_time
                     mi_ind = back
-            # self.l_time[i] = self.p_time[mi_ind]
-            # self.ls[i] = self.ps[mi_ind]
             self.l_time[i] = copy.deepcopy(self.p_time[mi_ind])
             self.ls[i] = copy.deepcopy(self.ps[mi_ind])
 
@@ -101,7 +98,6 @@ class IPSO():
             c_time = self.calc_time(candidate)
             if c_time < mi:
                 mi = c_time
-                # xdashdash = candidate
                 xdashdash = copy.deepcopy(candidate)
         # 5
         xdashdashdash = []
@@ -111,16 +107,13 @@ class IPSO():
             c_time = self.calc_time(candidate)
             if c_time < mi:
                 mi = c_time
-                # xdashdashdash = candidate
                 xdashdashdash = copy.deepcopy(candidate)
             xdashdash = xdashdash[1:] + [xdashdash[0]]
 
-        # self.xs[num] = xdashdashdash
         self.xs[num] = copy.deepcopy(xdashdashdash)
 
         if mi < self.p_time[num]:
             self.p_time[num] = mi
-            # self.ps[num] = xdashdashdash
             self.ps[num] = copy.deepcopy(xdashdashdash)
 
     def best_route_time(self) -> Tuple[list[int], int]:
@@ -166,7 +159,7 @@ class IPSO():
 
 class GA():
 
-    def __init__(self, m: int, e: int, cr: float, mr: float, max_time: float=1.8, display_flg: bool=True):
+    def __init__(self, m: int, e: int, cr: float, mr: float, c_alg: str, max_time: float=1.8, display_flg: bool=True):
         # データ数
         self.n = None
         # 遺伝子数
@@ -177,6 +170,8 @@ class GA():
         self.crate = cr
         # 突然変異確率
         self.mrate = mr
+        # 交叉アルゴリズム
+        self.c_alg = c_alg
         # イテレーション
         self.max_time = max_time
         # 途中経過を表示するか
@@ -196,16 +191,6 @@ class GA():
             time += self.dist[path[i]][path[(i+1)%len(path)]]
         
         return time
-
-    def update_x(self):
-        pass
-
-    def local_search(self):
-        pass
-    
-    # indはxs[ind]
-    def mutate(self, ind: int):
-        pass
 
     def norm_softmax(self, l: list[int]):
         mean = np.mean(l)
@@ -236,15 +221,17 @@ class GA():
         next_generation = [self.xs[argsorted_time[i]] for i in range(self.elite)]
 
         for i in range((self.m - self.elite) // 2):
-        # for i in range(self.m // 2):
             s1 = copy.deepcopy(self.xs[samples[2*i]])
             s2 = copy.deepcopy(self.xs[samples[2*i + 1]])
             if np.random.random() < self.crate:
-                s1, s2 = self.CX3(s1, s2)
-            # while np.random.random() < self.mrate:
-            #     s1 = self.UOM(s1)
-            # while np.random.random() < self.mrate:
-            #     s2 = self.UOM(s2)
+                if self.c_alg == 'CX':
+                    s1, s2 = self.CX(s1, s2)
+                elif self.c_alg == 'CX2':
+                    s1, s2 = self.CX2(s1, s2)
+                elif self.c_alg == 'CX3':
+                    s1, s2 = self.CX3(s1, s2)
+                else:
+                    raise ValueError('存在しない交叉アルゴリズムを指定している')
             if np.random.random() < self.mrate:
                 s1 = self.UOM(s1)
             if np.random.random() < self.mrate:
@@ -261,35 +248,6 @@ class GA():
         tmp = copy.deepcopy(path)
         tmp[r1] = path[r2]
         tmp[r2] = path[r1]
-
-        return tmp
-
-    # x = [D, E, I, M, P, S, U, W]
-    # y = [M, E, I, S, W, P, U, D]
-    # NRは単にyを返しているため交叉オペレータとしては意味をなさない
-    def NR(self, ind1: int, ind2: int):
-        new_path = copy.deepcopy(self.xs[ind1])
-        while True:
-            if self.xs[ind1] == self.xs[ind2]:
-                break
-
-            best_time = self.INF
-            best_path = None
-            # xのi番目の要素をyがある位置の要素とswap
-            for i in range(self.n):
-                if self.xs[ind1][i] == self.xs[ind2][i]:
-                    continue
-
-                for j in range(self.n):
-                    if self.xs[ind2][j] == self.xs[ind1][i]:
-                        tmp = copy.deepcopy(self.xs[ind1])
-                        tmp[i] = self.xs[ind1][j]
-                        tmp[j] = self.xs[ind1][i]
-                        tmp_time = self.calc_time(tmp)
-                        if tmp_time < best_time:
-                            best_time = tmp_time
-                            best_path = copy.deepcopy(tmp)
-                        break
 
         return tmp
 
@@ -353,7 +311,6 @@ class GA():
         child1 = [0 for _ in range(self.n)]
         child2 = [0 for _ in range(self.n)]
         seen_flg = [False for _ in range(self.n)]
-        # child_flg = True
         # key: 数字, value: インデックス
         num_to_index = {num:i for (i, num) in enumerate(path1)}
         for i in range(self.n):
@@ -374,13 +331,9 @@ class GA():
                 ind = num_to_index[path2[ind]]
 
                 if ind == i:
-                    # child_flg ^= True
                     break
 
         return (child1, child2)
-
-    def SR(self, ind1: int, ind2: int):
-        pass
 
     def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
         self.n = n
