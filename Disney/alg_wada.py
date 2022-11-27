@@ -15,6 +15,7 @@ class IPSO():
         self.c2 = c2
         self.k = m-1 if k == -1 else k
         self.max_time = max_time
+        self.seed = seed
         self.display_flg = display_flg
         self.n = None
         self.dist = None
@@ -25,7 +26,6 @@ class IPSO():
         self.ls = None
         self.l_time = None
         self.INF = 2 ** 30
-        np.random.seed(seed)
 
     # スタートとゴールを入口にするという改良の余地あり
     def calc_time(self, path: list[int]) -> int:
@@ -123,6 +123,7 @@ class IPSO():
         return (self.ps[mi_ind], self.p_time[mi_ind])
 
     def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+        np.random.seed(self.seed)
         self.n = n
         self.dist = dist
         self.wait = wait
@@ -175,6 +176,8 @@ class GA():
         self.c_alg = c_alg
         # イテレーション
         self.max_time = max_time
+        # seed値
+        self.seed = seed
         # 途中経過を表示するか
         self.display_flg = display_flg
         self.dist = None
@@ -183,7 +186,6 @@ class GA():
         self.INF = 2 ** 30
         self.best_time = self.INF
         self.best_route = None
-        np.random.seed(seed)
 
     def calc_time(self, path: list[int]) -> int:
         time = 0
@@ -338,6 +340,7 @@ class GA():
         return (child1, child2)
 
     def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+        np.random.seed(self.seed)
         self.n = n
         self.dist = dist
         self.wait = wait
