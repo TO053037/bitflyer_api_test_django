@@ -1,7 +1,7 @@
 import copy
 from functools import reduce
-import numpy as np
 from typing import Tuple
+
 import alg_wada
 
 
@@ -76,14 +76,6 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[lis
         wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], wait[i], [])
         new_wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], new_wait[i], [])
 
-    # ipso
-    # np.random.seed(28)
-    # ipso = IPSO(16, 0.2, 0.3, i=1000)
-    # route, time = ipso.fit(n, dist, new_wait_2)
-
-    # ga
-    # ga = GA(256, 32, 1.0, 1.0, i=1000)
-    # route, time = ga.fit(27, dist, new_wait_2)
     route, time = fc.fit(n, dist, new_wait_2)
 
     # -1を通っていないか検証
