@@ -1,15 +1,15 @@
 import copy
-from functools import reduce
-import numpy as np
 from time import time as timestamp
 from typing import Tuple
+
+import numpy as np
 
 
 
 # globalだけでなくlobalにも対応
 class IPSO():
 
-    def __init__(self, m: int, c1: float, c2: float, k: int=-1, max_time: float=1.8, display_flg: bool=True):
+    def __init__(self, m: int, c1: float, c2: float, k: int=-1, max_time: float=1.8, seed: int=28, display_flg: bool=True):
         self.m = m
         self.c1 = c1
         self.c2 = c2
@@ -25,6 +25,7 @@ class IPSO():
         self.ls = None
         self.l_time = None
         self.INF = 2 ** 30
+        np.random.seed(seed)
 
     # スタートとゴールを入口にするという改良の余地あり
     def calc_time(self, path: list[int]) -> int:
@@ -159,7 +160,7 @@ class IPSO():
 
 class GA():
 
-    def __init__(self, m: int, e: int, cr: float, mr: float, c_alg: str, max_time: float=1.8, display_flg: bool=True):
+    def __init__(self, m: int, e: int, cr: float, mr: float, c_alg: str, max_time: float=1.8, seed: int=28, display_flg: bool=True):
         # データ数
         self.n = None
         # 遺伝子数
@@ -182,6 +183,7 @@ class GA():
         self.INF = 2 ** 30
         self.best_time = self.INF
         self.best_route = None
+        np.random.seed(seed)
 
     def calc_time(self, path: list[int]) -> int:
         time = 0
