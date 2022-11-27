@@ -2,8 +2,6 @@ import copy
 from functools import reduce
 from typing import Tuple
 
-import alg_wada
-
 
 
 def wrapper_alg(fc, source_dist: str, source_wait: str, tspts_flg) -> Tuple[list[int], int]:
