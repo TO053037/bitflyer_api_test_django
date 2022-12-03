@@ -20,6 +20,7 @@ class IPSO():
         self.n = None
         self.dist = None
         self.wait = None
+        self.entrance_dist = None
         self.xs = None
         self.ps = None
         self.p_time = None
@@ -27,12 +28,14 @@ class IPSO():
         self.l_time = None
         self.INF = 2 ** 30
 
-    # スタートとゴールを入口にするという改良の余地あり
     def calc_time(self, path: list[int]) -> int:
-        time = 0
+        time = self.entrance_dist[path[0]]
         for i in range(len(path)):
             time += self.wait[path[i]][time]
-            time += self.dist[path[i]][path[(i+1)%len(path)]]
+            if i < self.n - 1:
+                time += self.dist[path[i]][path[(i+1)%len(path)]]
+            else:
+                time += self.entrance_dist[path[i]]
         
         return time
 
@@ -68,7 +71,6 @@ class IPSO():
         return
 
     def init_p_l(self):
-        # self.ps = self.xs
         self.ps = copy.deepcopy(self.xs)
         self.p_time = [self.calc_time(p) for p in self.ps]
         self.l_time = [self.INF for _ in range(self.m)]
@@ -122,18 +124,18 @@ class IPSO():
 
         return (self.ps[mi_ind], self.p_time[mi_ind])
 
-    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]], entrance_dist: list[int]) -> Tuple[list[int], int]:
         np.random.seed(self.seed)
         self.n = n
         self.dist = dist
         self.wait = wait
+        self.entrance_dist = entrance_dist
 
         # 1
         self.xs = [list(np.random.permutation(self.n)) for _ in range(self.m)]
         self.init_p_l()
 
         # 7
-        # 終了条件には工夫の余地がある
         route, time = self.best_route_time()
         if self.display_flg:
             print("initial_route:", route)
@@ -182,17 +184,20 @@ class GA():
         self.display_flg = display_flg
         self.dist = None
         self.wait = None
+        self.entrance_dist = None
         self.xs = None
         self.INF = 2 ** 30
         self.best_time = self.INF
         self.best_route = None
 
     def calc_time(self, path: list[int]) -> int:
-        time = 0
-        # for i in range(len(path) - 1):
+        time = self.entrance_dist[path[0]]
         for i in range(len(path)):
             time += self.wait[path[i]][time]
-            time += self.dist[path[i]][path[(i+1)%len(path)]]
+            if i < self.n - 1:
+                time += self.dist[path[i]][path[(i+1)%len(path)]]
+            else:
+                time += self.entrance_dist[path[i]]
         
         return time
 
@@ -255,7 +260,7 @@ class GA():
 
         return tmp
 
-    # サイクルを先頭ではなくランダムに決めることもできる
+    # 先頭から交互
     def CX(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
         child1 = [0 for _ in range(self.n)]
         child2 = [0 for _ in range(self.n)]
@@ -285,7 +290,7 @@ class GA():
 
         return (child1, child2)
 
-    # サイクルを先頭ではなくランダムに決めることもできる
+    # ランダムに一箇所
     def CX2(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
         child1 = [0 for _ in range(self.n)]
         child2 = [0 for _ in range(self.n)]
@@ -311,6 +316,7 @@ class GA():
 
         return (child1, child2)
 
+    # 先頭からランダム
     def CX3(self, path1: list[int], path2: list[int]) -> Tuple[list[int], list[int]]:
         child1 = [0 for _ in range(self.n)]
         child2 = [0 for _ in range(self.n)]
@@ -339,11 +345,12 @@ class GA():
 
         return (child1, child2)
 
-    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+    def fit(self, n: int, dist: list[list[int]], wait: list[list[int]], entrance_dist: list[int]) -> Tuple[list[int], int]:
         np.random.seed(self.seed)
         self.n = n
         self.dist = dist
         self.wait = wait
+        self.entrance_dist = entrance_dist
 
         self.xs = [list(np.random.permutation(self.n)) for _ in range(self.m)]
 
