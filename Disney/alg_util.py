@@ -30,20 +30,24 @@ def wrapper_alg(fc, source_dist: str, source_wait: str, tspts_flg) -> Tuple[list
     print("no_list:", no_list)
     print("in_list:", in_list)
 
+    # 21はエントランス近くのカリブの海賊
+    entrance_dist = [dist[i][21] for i in in_list]
     dist = [[dist[i][j] for j in in_list] for i in in_list]
     wait = [wait[i] for i in in_list]
     assert -1 not in reduce(lambda accum, x: accum + x, dist, []), 'distに-1が存在'
     assert [-1 for _ in range(len(wait[0]))] not in wait, 'waitに-1のみの行が存在'
     assert dist == [[dist[i][j] for i in range(len(dist))] for j in range(len(dist))], 'distが対称行列でない'
+    assert len(dist) == len(entrance_dist), 'distとentrance_distの大きさが異なる'
 
     # m -> minに80m/minで変換後、小数点以下切り上げ
     dist = [[(x+79) // 80 for x in l] for l in dist]
+    entrance_dist = [(x+79) // 80 for x in entrance_dist]
 
     # tspts_flgがTrueなら待ち時間を考慮する
     if tspts_flg:
-        route, time = wrapper_tspts(fc, dist, wait)
+        route, time = wrapper_tspts(fc, dist, wait, entrance_dist)
     else:
-        route, time = wrapper_tsp(fc, dist, wait)
+        route, time = wrapper_tsp(fc, dist, wait, entrance_dist)
 
     # バックエンドに渡すために頂点番号を変更
     vertex_mapping_list = [in_list[i] for i in range(len(in_list))]
@@ -52,7 +56,7 @@ def wrapper_alg(fc, source_dist: str, source_wait: str, tspts_flg) -> Tuple[list
     return (route, time)
 
 
-def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]], entrance_dist: list[int]) -> Tuple[list[int], int]:
     n = len(wait)
     new_wait = copy.deepcopy(wait)
     # -1の時に訪れたらペナルティ
@@ -74,17 +78,21 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[lis
         wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], wait[i], [])
         new_wait_2[i] = reduce(lambda accum, x: accum + [x for _ in range(15)], new_wait[i], [])
 
-    route, time = fc.fit(n, dist, new_wait_2)
+    route, time = fc.fit(n, dist, new_wait_2, entrance_dist)
 
     # -1を通っていないか検証
-    now_time = 0
+    now_time = entrance_dist[route[0]]
     for i in range(n):
         if wait_2[route[i]][now_time] == -1:
             raise AssertionError('-1を通っている')
         now_time += new_wait_2[route[i]][now_time]
-        now_time += dist[route[i]][route[(i+1)%n]]
+        if i < n - 1:
+            now_time += dist[route[i]][route[i+1]]
+        else:
+            now_time += entrance_dist[route[i]]
 
     print(route, time)
+    # print_timetable(route, dist, new_wait_2, entrance_dist)
 
     # 閉園時間を過ぎていたらメッセージ
     if time > len(new_wait_2[0]) // 2:
@@ -94,7 +102,7 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[lis
     return (route, time)
 
 
-def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[int], int]:
+def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]], entrance_dist: list[int]) -> Tuple[list[int], int]:
     n = len(wait)
     new_wait = copy.deepcopy(wait)
     # -1の時に訪れたら前後の値の平均値で補間（一方しかないならその値を使う）、小数点以下は切り上げ
@@ -129,13 +137,17 @@ def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[
     mi_route = None
     mi_time = 2 ** 30
     for s in range(n):
-        time = 0
-        rev_time = 0
+        time = entrance_dist[route[s]]
+        rev_time = entrance_dist[rev_route[s]]
         for i in range(n):
             time += new_wait_2[route[(s+i)%n]][time]
-            time += dist[route[(s+i)%n]][route[(s+i+1)%n]]
             rev_time += new_wait_2[rev_route[(s+i)%n]][rev_time]
-            rev_time += dist[rev_route[(s+i)%n]][rev_route[(s+i+1)%n]]
+            if i < n - 1:
+                time += dist[route[(s+i)%n]][route[(s+i+1)%n]]
+                rev_time += dist[rev_route[(s+i)%n]][rev_route[(s+i+1)%n]]
+            else:
+                time += entrance_dist[route[(s+i)%n]]
+                rev_time += entrance_dist[rev_route[(s+i)%n]]
         if time < mi_time:
             mi_route = route[s:] + route[:s]
             mi_time = time
@@ -144,6 +156,7 @@ def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]]) -> Tuple[list[
             mi_time = rev_time
 
     print(mi_route, mi_time)
+    # print_timetable(mi_route, dist, new_wait_2, entrance_dist)
 
     # 閉園時間を過ぎていたらメッセージ
     if mi_time > len(new_wait_2[0]):
@@ -171,3 +184,19 @@ def shape_wait(source: str) -> list[list[int]]:
     wait = [[int(x) for x in l] for l in wait]
 
     return wait
+
+
+def print_timetable(route: list[int], dist: list[list[int]], wait: list[list[int]], entrance_dist: list[int]) -> None:
+    print("time: 0, start")
+    time = entrance_dist[route[0]]
+    print(f"time: {time}, arrive attraction{route[0]}")
+    for i in range(len(route)):
+        time += wait[route[i]][time]
+        print(f"time: {time}, end attraction{route[i]}")
+        if i < len(route) - 1:
+            time += dist[route[i]][route[i+1]]
+            print(f"time: {time}, arrive attraction{route[i+1]}")
+        else:
+            time += entrance_dist[route[i]]
+            print(f"time: {time}, end")
+        
