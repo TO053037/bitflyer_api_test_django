@@ -29,6 +29,9 @@ class IPSO():
         self.INF = 2 ** 30
 
     def calc_time(self, path: list[int]) -> int:
+        if path == []:
+            return 0
+
         time = self.entrance_dist[path[0]]
         for i in range(len(path)):
             time += self.wait[path[i]][time]
@@ -83,8 +86,8 @@ class IPSO():
         r2 = np.random.rand()
         plen = int(self.c1 * r1 * self.n)
         llen = int(self.c2 * r2 * self.n)
-        pind = np.random.randint(0, self.n - plen + 1)
-        lind = np.random.randint(0, self.n - llen + 1)
+        pind = np.random.randint(0, self.n - plen)
+        lind = np.random.randint(0, self.n - llen)
         pdash = self.ps[num][pind:(pind+plen)]
         ldash = self.ls[num][lind:(lind+llen)]
         # 2
@@ -93,17 +96,17 @@ class IPSO():
         p_and_l = pdashdash + ldash
         xdash = [x for x in self.xs[num] if x not in p_and_l]
         # 4
-        # 挿入場所を1つ増やせる、pdashを反対にできる
-        xdashdash = []
+        # pdashを反対にできる
+        xdashdash = copy.deepcopy(pdashdash)
         mi = self.INF
-        for i in range(1, self.n - len(p_and_l)):
+        for i in range(self.n - len(p_and_l)):
             candidate = xdash[:i] + pdashdash + xdash[i:]
             c_time = self.calc_time(candidate)
             if c_time < mi:
                 mi = c_time
                 xdashdash = copy.deepcopy(candidate)
         # 5
-        xdashdashdash = []
+        xdashdashdash = copy.deepcopy(ldash)
         mi = self.INF
         for i in range(self.n - len(ldash)):
             candidate = xdashdash[:lind] + ldash + xdashdash[lind:]
