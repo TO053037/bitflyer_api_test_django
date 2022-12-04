@@ -33,7 +33,18 @@ def wrapper_alg(fc, source_dist: str, source_wait: str, tspts_flg) -> Tuple[list
     # 21はエントランス近くのカリブの海賊
     entrance_dist = [dist[i][21] for i in in_list]
     dist = [[dist[i][j] for j in in_list] for i in in_list]
-    wait = [wait[i] for i in in_list]
+
+    # waitにアトラクションの所要時間（小数点以下切り上げ）を追加
+    attraction_dic_riding = {0: 8, 1: 1.5, 2: 10, 3: 4.5, 4: 4, 5: 3, 
+                         6: 4, 7: 4, 8: 1.5, 9: 2.5, 10: 15, 
+                         11: 2, 12: 2.5, 13: 10, 14: 1.5, 15: 2, 
+                         16: 16, 17: 8, 18: 4.5, 19: 12, 20: 6, 
+                         21: 15, 22: 10, 23: 15, 24: 10, 25: 5,
+                         26: 17, 27: 3, 28: 10, 29: 8.5, 
+                         30: 1, 31: 3.5, 32: 1.5, 33: 5, 34: 8,
+                         35: 5, }
+    wait = [[-1 if x == -1 else x + int(attraction_dic_riding[i] + 0.9) for x in wait[i]] for i in in_list]
+
     assert -1 not in reduce(lambda accum, x: accum + x, dist, []), 'distに-1が存在'
     assert [-1 for _ in range(len(wait[0]))] not in wait, 'waitに-1のみの行が存在'
     assert dist == [[dist[i][j] for i in range(len(dist))] for j in range(len(dist))], 'distが対称行列でない'
@@ -66,10 +77,11 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]], entrance_dis
             if wait[i][j] == -1:
                 new_wait[i][j] = 2 * max_i + 30
 
-    # 消費時間の平均で12時間追加して倍にする
+    # 消費時間の平均で元々の長さの3倍を追加する（元々12時間なら48時間にする）
     for i in range(n):
-        mean_i = sum(wait[i]) // len(wait[0])
-        new_wait[i] += [mean_i for _ in range(len(wait[0]))]
+        able_list = [x for x in wait[i] if x != -1]
+        mean_i = sum(able_list) // len(able_list)
+        new_wait[i] += [mean_i for _ in range(3 * len(wait[0]))]
 
     # 15倍にする
     wait_2 = [[] for _ in range(n)]
@@ -123,6 +135,11 @@ def wrapper_tsp(fc, dist: list[list[int]], wait: list[list[int]], entrance_dist:
                     new_wait[i][j] = (new_wait[i][j] + back + 1) // 2
                 else:
                     new_wait[i][j] = back
+
+    # 消費時間の平均で元々の長さの3倍を追加する（元々12時間なら48時間にする）
+    for i in range(n):
+        mean_i = sum(wait[i]) // len(wait[0])
+        new_wait[i] += [mean_i for _ in range(3 * len(wait[0]))]
 
     # 15倍にする
     new_wait_2 = [[] for _ in range(n)]
