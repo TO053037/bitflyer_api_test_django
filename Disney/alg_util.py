@@ -95,7 +95,7 @@ def wrapper_tspts(fc, dist: list[list[int]], wait: list[list[int]], entrance_dis
     # -1を通っていないか検証
     now_time = entrance_dist[route[0]]
     for i in range(n):
-        if wait_2[route[i]][now_time] == -1:
+        if now_time < len(wait_2[route[i]]) and wait_2[route[i]][now_time] == -1:
             raise AssertionError('-1を通っている')
         now_time += new_wait_2[route[i]][now_time]
         if i < n - 1:
