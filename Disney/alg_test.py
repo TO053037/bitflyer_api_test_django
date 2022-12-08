@@ -2,14 +2,15 @@ import numpy as np
 
 import alg_util
 import alg_wada
+import alg_kishiki
 
 
 
 if __name__ == '__main__':
-    ipso = alg_wada.IPSO(16, 0.2, 0.3)
-    route, time = alg_util.wrapper_alg(ipso, './Disney/attractions_distances_data.csv', './wait_time_data_20221105.csv', True)
-    print('route:', route)
-    print('time:', time)
+    # ipso = alg_wada.IPSO(16, 0.2, 0.3)
+    # route, time = alg_util.wrapper_alg(ipso, './Disney/attractions_distances_data.csv', './wait_time_data_20221105.csv', True)
+    # print('route:', route)
+    # print('time:', time)
 
     # ga = alg_wada.GA(32, 4, 1.0, 1.0, c_alg='CX')
     # route, time = alg_util.wrapper_alg(ga, './Disney/attractions_distances_data.csv', './wait_time_data_20221105.csv', True)
@@ -26,3 +27,8 @@ if __name__ == '__main__':
     #     route, time = alg_util.wrapper_alg(ipso, './Disney/attractions_distances_data.csv', './wait_time_data_20221105.csv', True)
     #     print('route:', route)
     #     print('time:', time)
+
+    hoge = alg_kishiki.HOGE()
+    route, time = alg_util.wrapper_alg(hoge, './Disney/attractions_distances_data.csv', './wait_time_data_20221105.csv', True, True)
+    print('route:', route)
+    print('time:', time)
